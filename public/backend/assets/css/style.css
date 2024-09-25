@@ -1,0 +1,9 @@
+/* Hide badge when dropdown is open */
+.nav-item .nav-link ~ #badge-notify {
+    display: none;
+}
+
+
+.text-right {
+ text-align: right;
+}
