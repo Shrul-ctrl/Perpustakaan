@@ -31,7 +31,7 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="">
-                            <h3 class="mb-0 text-indigo pb-3">{{$jumlahhistori}}</h3>
+                            <h3 class="mb-0 text-indigo pb-3">{{$jumlahpinjam}}</h3>
                             <a href="{{route('buku.index')}}" class="btn btn-primary rounded-5 border-0 px-4">Lihat Detail</a>
                         </div>
                         <img src="{{asset('backend/assets/images/leptop/cart.avif')}}" width="100" alt="">
@@ -92,15 +92,15 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table mb-0" id="example">
+                    <table class="table mb-0">
                         <thead class="table">
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Judul</th>
-                                <th scope="col">Jumlah</th>
+                                <th scope="col">Jumlah Pinjam</th>
                                 {{-- <th scope="col">Tanggal Peminjaman</th> --}}
                                 <th scope="col">Batas Peminjaman</th>
-                                <th scope="col">Status</th>
+                                <th scope="col"class="text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -108,12 +108,11 @@
                             <tr>
                                 <th scope="row" class="text-center">{{ $loop->index+1 }}</th>
                                 <td>{{ $data->buku->judul }}</td>
-                                <td>{{ $data->jumlah_pinjam }}</td>
+                                <td class="text-center">{{ $data->jumlah_pinjam }}</td>
                                 {{-- <td>{{ $data->tanggal_pinjam }}</td> --}}
-                                <td>{{ $data->batas_pinjam }}</td>
-                                <td>
+                                <td  class="text-center">{{ $data->batas_pinjam }}</td>
+                                
                                     @include('include.fullstack.ifelsestatus')
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -125,17 +124,13 @@
 
     <!-- Tabel -->
     <div class="col-12 col-lg-4 col-xxl-4 d-flex flex-column">
-        <div class="card rounded-4 w-100 bg ">
-            <div class="card-body">
-                <div class="col">
-                    <h6 class="mb-0 text-uppercase">With Crossfade</h6>
-                    <hr>
+ 
                     <div class="card">
-                        <div class="card-body">`
+                        <div class="card-body">
                             <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
                                 <div class="carousel-inner">
                                     @php
-                                    $limitedbuku = $buku->take(3);
+                                    $limitedbuku = $buku->take(5);
                                     @endphp
                                     @foreach ($limitedbuku as $index => $data)
                                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
@@ -191,9 +186,7 @@
                         </a>
                     </div>
                 </div> --}}
-            </div>
-        </div>
-    </div>
+             
 </div>
 
 

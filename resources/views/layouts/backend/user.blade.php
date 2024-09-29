@@ -89,7 +89,7 @@
                 ordering: false
                 , lengthChange: false
                 , info: false
-                ,  searching: false
+                , searching: false
                 , language: {
                     search: "Cari:"
                 }
@@ -141,6 +141,29 @@
             $('[data-bs-toggle="popover"]').popover();
             $('[data-bs-toggle="tooltip"]').tooltip();
         })
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.open-modal').on('click', function() {
+                var peminjamanId = $(this).data('id');
+
+                $.ajax({
+                    url: '/detail-peminjaman/' + peminjamanId
+                    , type: 'GET'
+                    , success: function(data) {
+                        $('#input1').val(data.id_buku.judul);
+                        $('#input2').val(data.jumlah);
+                        $('#input3').val(data.tanggal_pinjam);
+                        $('#input4').val(data.tanggal_kembali);
+                    }
+                    , error: function() {
+                        alert('Data tidak ditemukan.');
+                    }
+                });
+            });
+        });
 
     </script>
 

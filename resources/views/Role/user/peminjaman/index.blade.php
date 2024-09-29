@@ -62,7 +62,9 @@
                             <form action="{{ route('peminjaman.destroy', $data->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="left" title="Hapus Data" onclick="return confirm('Batal Pinjam Buku?')"><i class="material-icons-outlined" style="font-size: 18px;">delete</i></button>
+                                <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="left" title="Batalkan Pinjaman" onclick="return confirm('Batal Pinjam Buku?')">
+                                    <i class="material-icons-outlined" style="font-size: 18px;">delete</i>
+                                </button>
                             </form>
 
                             @elseif($data->status_pengajuan === 'pengajuan diterima')

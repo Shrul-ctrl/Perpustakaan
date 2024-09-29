@@ -1,4 +1,4 @@
-@extends('layouts.backend.user')
+@extends('layouts.frontend.main')
 @section('content')
 
 <!-- Header Start -->
@@ -44,12 +44,13 @@
                                 {{ $errors->first('id_buku') }}
                             </div>
                             @endif
-                            <div class="col-md-6">
-                                <label for="input13" class="form-label">Nama Peminjam</label>
+                            {{-- <div class="col-md-6"> --}}
+                                {{-- <label for="input13" class="form-label">Nama Peminjam</label> --}}
                                 <div class="position-relative">
-                                    <input class="form-control mb-3" type="text" name="nama_peminjam" placeholder="Nama" value="{{ Auth::user()->name }}" required readonly>
+                                    <input type="hidden" name="id_user" value="{{ Auth::user()->id }}">
+
                                 </div>
-                            </div>
+                            {{-- </div> --}}
 
                             <div class="col-md-6">
                                 <label for="input13" class="form-label">Tanggal Peminjaman</label>

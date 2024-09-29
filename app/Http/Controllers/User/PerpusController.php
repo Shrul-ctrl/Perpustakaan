@@ -28,37 +28,46 @@ class PerpusController extends Controller
         return view('Role.user.home',  compact('user', 'peminjaman', 'buku'));
     }
 
+    public function fax()
+    {
+        $user = Auth::user();
+        return view('Role.user.fax',  compact('user'));
+    }
+
+    public function hubungi()
+    {
+        $user = Auth::user();
+        return view('Role.user.hubungi',  compact('user'));
+    }
+
     public function dashboard()
     {
-        $user = auth()->User();
+        $user = Auth::User();
         $jumlahbuku = Buku::count();
         $jumlahpenerbit = Penerbit::count();
         $jumlahpenulis = Penuli::count();
         $jumlahkategori = Kategori::count();
-        $jumlahpinjam = Peminjamens::count();
-        $jumlahhistori = Peminjamens::where('nama_peminjam', $user->name)->count();
-
-        $jumlahpengajuanditerima = Peminjamens::where('status_pengajuan', 'pengajuan diterima')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengajuanditolak = Peminjamens::where('status_pengajuan', 'pengajuan ditolak')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengembalianditerima = Peminjamens::where('status_pengajuan', 'pengembalian diterima')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengembalianditolak = Peminjamens::where('status_pengajuan', 'pengembalian ditolak')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $peminjamannotif = Peminjamens::where('nama_peminjam', $user->name)->whereIn('status_pengajuan', ['pengajuan diterima', 'pengajuan ditolak', 'pengembalian diterima', 'pengembalian ditolak'])->orderBy('id', 'desc')->get();
-        Peminjamens::where('notif', false)->update(['notif' => true]);
+        $jumlahpinjam = Peminjamens::where('id_user', $user->id)->count();
+        $jumlahhistori = Peminjamens::where('id_user', $user->id)->where('status_pengajuan', 'pengembalian diterima')->count();
 
         $buku = Buku::orderBy('id', 'desc')->get();
-        $peminjamanuser = Peminjamens::where('nama_peminjam', $user->name);
-        return view('Role.user.dashboarduser', compact('peminjamanuser', 'user', 'buku', 'jumlahbuku', 'jumlahpenerbit', 'jumlahpenulis', 'jumlahkategori', 'peminjamannotif', 'jumlahpinjam', 'jumlahhistori', 'user', 'jumlahpengajuanditerima', 'jumlahpengajuanditolak', 'jumlahpengembalianditerima', 'jumlahpengembalianditolak'));
+        $peminjamanuser = Peminjamens::where('id_user', $user->id)->get();
+        return view('Role.user.dashboarduser', compact('peminjamanuser', 'user', 'buku', 'jumlahbuku', 'jumlahpenerbit', 'jumlahpenulis', 'jumlahkategori', 'jumlahpinjam', 'jumlahhistori', 'user'));
     }
 
     public function listbuku($id = null)
     {
         $kategori = Kategori::all();
+        $penerbit = penerbit::all();
+        $penulis = penuli::all();
+        $bukufilter = buku::all();
         $buku = $id ? Buku::where('id_kategori', $id)->get() :
-            $buku = Buku::paginate(12);
-        $pagination = DB::table('peminjamens')->paginate(8);
+            $buku = Buku::paginate(16);
+        $kategoriDipilih = $id ? Kategori::find($id) : null;
+        $pagination = Buku::paginate(16);
         $user = Auth::user();
         $peminjaman = Peminjamens::all();
-        return view('Role.user.listbuku',  compact('pagination', 'user', 'peminjaman', 'buku', 'kategori'));
+        return view('Role.user.listbuku',  compact('kategoriDipilih', 'pagination', 'user','bukufilter','penerbit','penulis', 'peminjaman', 'buku', 'kategori'));
     }
 
     public function show($id)
@@ -71,52 +80,34 @@ class PerpusController extends Controller
         return view('Role.user.show', ['user' => $user], compact('komentars', 'buku', 'peminjaman', 'user'));
     }
 
-    public function profile()
-    {
-        $user = Auth::user();
-
-        $jumlahpengajuanditerima = Peminjamens::where('status_pengajuan', 'pengajuan diterima')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengajuanditolak = Peminjamens::where('status_pengajuan', 'pengajuan ditolak')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengembalianditerima = Peminjamens::where('status_pengajuan', 'pengembalian diterima')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengembalianditolak = Peminjamens::where('status_pengajuan', 'pengembalian ditolak')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $peminjamannotif = Peminjamens::where('nama_peminjam', $user->name)->whereIn('status_pengajuan', ['pengajuan diterima', 'pengajuan ditolak', 'pengembalian diterima', 'pengembalian ditolak'])->orderBy('id', 'desc')->get();
-        Peminjamens::where('notif', false)->update(['notif' => true]);
-
-        return view('Role.user.profile', compact('user', 'peminjamannotif', 'jumlahpengajuanditerima', 'jumlahpengajuanditolak', 'jumlahpengembalianditerima', 'jumlahpengembalianditolak'));
-    }
+    // public function historishow($id)
+    // {
+    //     $buku = Buku::findOrFail($id);
+    //     $user = User::findOrFail($id);
+    //     $user = Auth::user();
+    //     $peminjaman = Peminjamens::all();
+    //     $komentars = Komentar::with('user')->latest()->get();
+    //     return view('Role.user.historiuser', ['user' => $user], compact('komentars', 'buku', 'peminjaman', 'user'));
+    // }
 
     public function profilelistbuku($id = null)
     {
-        $kategori = Kategori::all();
-        $buku = $id ? Buku::where('id_kategori', $id)->get():
-            $buku = Buku::paginate(8);
         $user = Auth::user();
-        $pagination = DB::table('peminjamens')->paginate(8);
-
-        $jumlahpengajuanditerima = Peminjamens::where('status_pengajuan', 'pengajuan diterima')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengajuanditolak = Peminjamens::where('status_pengajuan', 'pengajuan ditolak')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengembalianditerima = Peminjamens::where('status_pengajuan', 'pengembalian diterima')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengembalianditolak = Peminjamens::where('status_pengajuan', 'pengembalian ditolak')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $peminjamannotif = Peminjamens::where('nama_peminjam', $user->name)->whereIn('status_pengajuan', ['pengajuan diterima', 'pengajuan ditolak', 'pengembalian diterima', 'pengembalian ditolak'])->orderBy('id', 'desc')->get();
-        Peminjamens::where('notif', false)->update(['notif' => true]);
-
-        return view('Role.user.profilelistbuku', compact('pagination', 'user', 'buku', 'peminjamannotif', 'kategori', 'jumlahpengajuanditerima', 'jumlahpengajuanditolak', 'jumlahpengembalianditerima', 'jumlahpengembalianditolak'));
+        $kategori = Kategori::all();
+        $buku = $id ? Buku::where('id_kategori', $id)->get() :
+            $buku = Buku::paginate(8);
+        $kategoriDipilih = $id ? Kategori::find($id) : null;
+        $pagination = Buku::paginate(8);
+        return view('Role.user.profilelistbuku', compact('kategoriDipilih', 'pagination', 'user', 'buku', 'kategori'));
     }
 
-    public function historiuser()
+    public function riwayat()
     {
         $user = Auth::user();
-        $peminjaman = Peminjamens::where('status_pengajuan' , 'pengembalian diterima')->where('nama_peminjam', $user->name)->paginate(8);
+        $buku = Buku::all();
+        $peminjaman = Peminjamens::where('status_pengajuan', 'pengembalian diterima')->where('id_user', $user->id)->paginate(8);
         $pagination = DB::table('peminjamens')->paginate(8);
-      
-        $jumlahpengajuanditerima = Peminjamens::where('status_pengajuan', 'pengajuan diterima')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengajuanditolak = Peminjamens::where('status_pengajuan', 'pengajuan ditolak')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengembalianditerima = Peminjamens::where('status_pengajuan', 'pengembalian diterima')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $jumlahpengembalianditolak = Peminjamens::where('status_pengajuan', 'pengembalian ditolak')->where('nama_peminjam', $user->name)->where('notif', false)->count();
-        $peminjamannotif = Peminjamens::where('nama_peminjam', $user->name)->whereIn('status_pengajuan', ['pengajuan diterima', 'pengajuan ditolak', 'pengembalian diterima', 'pengembalian ditolak'])->orderBy('id', 'desc')->get();
-        Peminjamens::where('notif', false)->update(['notif' => true]);
 
-        return view('Role.user.historiuser', compact('pagination', 'user', 'peminjaman', 'peminjamannotif', 'jumlahpengajuanditerima', 'jumlahpengajuanditolak', 'jumlahpengembalianditerima', 'jumlahpengembalianditolak'));
+        return view('Role.user.historiuser', compact('buku', 'pagination', 'user', 'peminjaman'));
     }
-
 }

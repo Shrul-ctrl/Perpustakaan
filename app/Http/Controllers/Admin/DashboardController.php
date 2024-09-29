@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $peminjamannotif = Peminjamens::all();
         Peminjamens::where('notif', false)->update(['notif' => true]);
         // $peminjamannotif = Peminjamens::where('notif', false)->get();
-        $jumlahuser  = User::where('isAdmin', 0)->count();
+        $jumlahuser  = User::whereIn('isAdmin', ['staff','user'])->count();
         $jumlahpeminjamanbuku  = Peminjamens::count();
         $users = User::orderBy('id', 'desc')->get();
         $jumlahkategori = Kategori::count();

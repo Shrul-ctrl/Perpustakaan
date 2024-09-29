@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             // 'potoprofile' => 'Kampus',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('123456789'),
-            'isAdmin' => '3'
+            'isAdmin' => 'admin'
         ]);
     }
 }

@@ -45,14 +45,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function komentar()
+    public function peminjaman()
     {   
-        return $this->hasMany(Komentar::class);
+        return $this->hasMany(Peminjamens::class);
     } 
 
-    public function kontak()
+    public function user()
     {   
-        return $this->hasMany(Kontak::class);
+        return $this->hasMany(User::class);
     } 
 
     

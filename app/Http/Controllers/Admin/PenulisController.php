@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Penuli;
 use App\Models\Peminjamens;
+use App\Models\Buku;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -76,6 +77,18 @@ class PenulisController extends Controller
     public function destroy($id)
     {
         $penuli = Penuli::FindOrFail($id);
+
+
+        $bukudipinjam = Buku::where('id_penulis', $id)
+            ->whereHas('peminjamens', function ($query) {
+                $query->whereIn('status_pengajuan', ['menunggu pengajuan', 'pengajuan diterima', 'pengembalian diterima', 'pengembalian ditolak', 'dikembalikan']);
+            })
+            ->exists();
+
+        if ($bukudipinjam) {
+            return redirect()->route('penulis.index')->with('error', 'Penulis tidak bisa dihapus karena masih ada buku yang terkait.');
+        }
+
         $penuli->delete();
         return redirect()->route('penulis.index')->with('success', 'Data berhasil dihapus');
     }

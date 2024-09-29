@@ -1,4 +1,4 @@
-@extends('layouts.backend.user')
+@extends('layouts.frontend.main')
 @section('content')
 <!-- Facilities Start -->
 <div class="container-fluid pt-5" style="margin-top: 50px ">
@@ -19,7 +19,7 @@
                             <p>Penulis : {{$buku->penuli->nama_penulis}}</p>
                             <p>Penerbit : {{$buku->penerbit->nama_penerbit}}</p>
                             <p>Kategori : {{$buku->kategori->nama_kategori}}</p>
-                            <p>Jumlah : {{$buku->jumlah}}</p>
+                            <p>Jumlah Buku Tersedia: {{$buku->jumlah_buku}}</p>
                             <p>Sinopsis : {{$buku->deskripsi}}</p>
                         </div>
                     </div>
@@ -35,51 +35,7 @@
                     {{ session('success') }}
                 </div>
                 @endif
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 pb-1">
-                        <h4 class="mb-4">Komentar</h4>
-                        @guest
-                        <h1 class="text-center">Anda Tidak Bisa Berkomentar, <a href="{{route('login')}}">Login Terlebih Dahulu</a></h1>
-                        @endguest
-                        <hr class="bg-dark">
-                        <div class="chat-header">
-                            <div class="list-inline d-sm-flex mb-0 d-none">
-                                <p class="list-inline-item text-secondary">
-                                    <a href="" class="list-inline-item text-secondary">Terbaru</a>
-                                    <a href="" class="list-inline-item text-secondary">Terlama</a>
-                                </p>
-                            </div>
-                        </div>
-                        @foreach($komentars as $data)
-                        <div class="d-flex mb-3">
-                            <img src="{{ asset('images/data/' . $data->fotoprofile) }}" width="60" height="60" class="rounded-circle mr-3" alt="" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';"/>
-                            <div class="flex-grow-1 ms-2">
-                                <p class="mb-0">{{ $data->user->name }}</p>
-                                <p class="mb-0">{{ $data->tanggal_komentar}}</p>
-                                <p>{{ $data->komentar }}</p>
-                                <p class="d-flex align-content-between">
-                                    <a href="#"><i class="material-icons-outlined mx-2">thumb_up</i></a> {{ $data->suka }}
-                                    <a href="#"><i class="material-icons-outlined mx-2">thumb_down</i></a> {{ $data->tidak_suka }}
-                                </p>
-                            </div>
-                        </div>
-                        @endforeach
-
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1 pe-2">
-                                @auth
-                                <form action="{{ route('komentar.store') }}" method="POST">
-                                    @csrf
-                                    <div class="input-group">
-                                        <input type="text" name="komentar" class="form-control" placeholder="Beri Komentar" required>
-                                        <button class="btn btn-primary" type="submit">Kirim</button>
-                                    </div>
-                                </form>
-                                @endauth
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
         </section>
     </div>

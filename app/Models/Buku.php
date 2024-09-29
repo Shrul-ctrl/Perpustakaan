@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Buku extends Model
 {
     use HasFactory;
-    protected $fillable = ['id','judul','deskripsi','foto','id_penulis','id_penerbit','id_kategori','tahun_terbit','jumlah_buku'];
+    protected $fillable = ['id', 'judul', 'deskripsi', 'foto', 'id_penulis', 'id_penerbit', 'id_kategori', 'tahun_terbit', 'jumlah_buku'];
     public $timestamps = true;
 
     public function penuli()
@@ -24,6 +24,11 @@ class Buku extends Model
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'id_kategori');
+    }
+
+    public function peminjamens()
+    {
+        return $this->hasMany(Peminjamens::class, 'id_buku');
     }
 
     public function deleteImage()

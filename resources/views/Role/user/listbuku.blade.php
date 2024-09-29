@@ -1,75 +1,135 @@
-@extends('layouts.backend.user')
+<style>
+    .filter-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 5px 8px 16px 5px rgba(0, 0, 0, 0.374);
+        padding: 25px;
+        margin-top: 10px;
+        width: 800px;
+        top: 50px;
+        right: 0;
+        z-index: 1;
+        border-radius: 20px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .filter-btn {
+        border-radius: 5px;
+        padding: 5px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        color: green
+    }
+
+    .filter-btn:hover {
+        color: white;
+        background: green
+    }
+
+    .filter-section {
+        float: left;
+        width: 25%;
+        /* border-right: 1px solid black; */
+        padding-left: 20px
+    }
+
+    .filter-section ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .filter-section h3 {
+        margin-bottom: 10px;
+    }
+
+    .dropdown-content::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+</style>
+@extends('layouts.frontend.main')
 <title>Perpustakaan - Daftar Buku</title>
 @section('content')
 
 <!-- Header Start -->
 <div class="container-fluid bg-primary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-        <h3 class="display-3 font-weight-bold text-white">List Buku</h3>
+        <h3 class="display-3 font-weight-bold text-white">Daftar Buku</h3>
         <div class="d-inline-flex text-white">
             <p class="m-0"><a class="text-white" href="">Home</a></p>
             <p class="m-0 px-2">/</p>
-            <p class="m-0">Buku</p>
+            <p class="m-0">Daftar Buku</p>
         </div>
     </div>
 </div>
 <!-- Header End -->
 
-<!-- Gallery Start -->
-<div class="container-fluid pt-5 pb-3">
-    <div class="container">
-        <div class="text-center pb-2">
-            <p class="section-title px-5">
-                <span class="px-2">List Buku</span>
-            </p>
-            <h1 class="mb-4">Pinjam Buku</h1>
-        </div>
-        <div class="row">
-            <div class="col-12 text-center mb-2">
-                <ul class="list-inline mb-4" id="portfolio-flters">
-                    <li class="btn btn-outline-primary m-1">
-                        <a href="{{ route('listbuku') }}">Semua</a>
-                    </li>
-                    @foreach ($kategori as $data)
-                    <li class="btn btn-outline-primary m-1">
-                        <a href="{{ route('buku.filter', $data->id) }}">{{ $data->nama_kategori }}</a>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
+<!-- Detail Start -->
+<div class="container p-5 py-5">
+    <div class="row pt-5">
+        <div class="col-lg-8">
+            <div class="d-flex flex-column text-left mb-3">
+                <p class="section-title pr-5">
+                    <span class="pr-2">Daftar Buku</span>
+                </p>
+                <h2 class="mb-3" id="daftar">Daftar Peminjaman Buku</h2>
+
+                @if ($kategoriDipilih)
+                <div class="d-flex justify-content-start gap-2">
+                    <a href="{{ route('listbuku') }}" type="button" class="btn btn-success">Tampilkan semua kategori</a>
+                    <button type="button" class="btn btn-primary" style="max-width: 200px;">{{ $kategoriDipilih->nama_kategori }}</button>
+                </div>
+
+
+                {{-- @elseif ($penerbitDipilih)
+                <div class="d-flex justify-content-start gap-2">
+                    <a href="{{ route('listbuku') }}" type="button" class="btn btn-success">Tampilkan semua kategori</a>
+                <button type="button" class="btn btn-primary" style="max-width: 200px;">{{ $kategoriDipilih->nama_penerbit }}</button>
+            </div> --}}
+            @endif
         </div>
 
-        @if($buku->isEmpty())
-        <div class="alert alert-info" role="alert">
-            <h2 class="text-center p-3">Buku Sedang Kosong</h2>
-        </div>
-        @else
-        <div class="row">
-            @foreach ($buku as $data)
-            <div class="col-lg-3 mb-5">
-                <div class="card border-0 bg-light shadow-sm pb-2">
-                    {{-- <a href="{{ url('show', $data->id) }}"> --}}
-                        <img src="{{ asset('images/buku/' . ($data->foto)) }}" alt="" class="card-img-top" width="50" height="350" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
-                    {{-- </a> --}}
-                    <div class="card-body text-center">
-                        <h4 class="card-title">{{ $data->judul }}</h4>
-                        <p class="card-text"></p>
-                    </div>
-                    <div class="d-flex justify-content-center gap-1">
-                        <a href="{{ route('peminjaman.create' , $data->id) }}" type="button" class="btn btn-primary btn-sm">Pinjam</a>
-                        {{-- <a href="{{ url('user/show', $data->id) }}#komentar" type="button" class="btn btn-success btn-sm">Ulas</a> --}}
-                        <a href="{{ url('user/show', $data->id) }}" type="button" class="btn btn-warning btn-sm">Detail</a>
+        <!-- Comment List -->
+        <div class="card border-0 shadow-sm p-3 mb-5">
+            @if($buku->isEmpty())
+            <div class="row">
+                <div class="col-lg-12 mb-5">
+                    <div class="alert alert-info" role="alert">
+                        <h2 class="text-center p-3">Buku Sedang Kosong</h2>
                     </div>
                 </div>
             </div>
-            @endforeach
-            
             @endif
 
-            
+            <div class="row">
+                @foreach ($buku as $data)
+                <div class="col-lg-3 mb-5">
+                    <div class="card border-0 bg-light shadow-sm pb-2">
+                        <img src="{{ asset('images/buku/' . ($data->foto)) }}" alt="" class="card-img-top" width="50" height="200" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">{{ $data->judul }}</h6>
+                        </div>
+                        <div class="d-flex justify-content-center gap-1">
+                            <a href="{{ route('user.peminjaman.create' , $data->id) }}" type="button" class="btn btn-primary btn-sm">Pinjam</a>
+                            <a href="{{ url('user/show', $data->id) }}" type="button" class="btn btn-warning btn-sm">Detail</a>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
             <nav aria-label="Page navigation example">
-                <ul class="pagination" style="justify-content: center;">
-                    <li class="page-item {{ $pagination->onFirstPage()}}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {{ $pagination->onFirstPage() ? 'disabled' : '' }}">
                         <a class="page-link" href="{{ $pagination->previousPageUrl() }}" aria-label="Sebelum">
                             <span aria-hidden="true">«</span>
                         </a>
@@ -81,7 +141,7 @@
                     </li>
                     @endforeach
 
-                    <li class="page-item {{ $pagination->hasMorePages()}}">
+                    <li class="page-item {{ $pagination->hasMorePages() ? '' : 'disabled' }}">
                         <a class="page-link" href="{{ $pagination->nextPageUrl() }}" aria-label="Next">
                             <span aria-hidden="true">»</span>
                         </a>
@@ -90,6 +150,213 @@
             </nav>
         </div>
     </div>
+
+    <div class="col-lg-4 mt-5 mt-lg-0">
+        <div class="card border-0 shadow-sm mb-2 p-3">
+            <div class="d-flex justify-content-end gap-2">
+                <button class="filter-btn mb-3 border border-success" onclick="toggleDropdown()"> <i class="fas fa-filter"></i>Filter</button>
+                <form action="{{ route('peminjaman.index') }}" method="GET" class="mb-3 ">
+                    <select name="status_pengajuan" class="form-select border border-primary" onchange="this.form.submit()">
+                        <option value="">Filter Buku Terbaru</option>
+                        <option value="">Filter Buku Populer</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        <div id="dropdown" class="dropdown-content">
+            <div class="filter-section">
+                <h3>Kategori</h3>
+                <div class="col-md-12">
+                    <ul>
+                        @foreach ($kategori as $data)
+                        <li>
+                            <a href="{{ route('buku.filter', $data->id) }}">{{ $data->nama_kategori }}</a>
+                        </li>
+                        @endforeach
+
+                    </ul>
+                </div>
+            </div>
+            <div class="filter-section">
+                <h3>Penerbit</h3>
+                <div class="col-md-12">
+                    <ul>
+                        @foreach ($penerbit as $data)
+                        <li>
+                            <a href="{{ route('buku.filter', $data->id) }}">{{ $data->nama_penerbit }}</a>
+                        </li>
+                        @endforeach
+
+                    </ul>
+                </div>
+            </div>
+            <div class="filter-section">
+                <h3>Penulis</h3>
+                <div class="col-md-12">
+                    <ul>
+                        @foreach ($penulis as $data)
+                        <li>
+                            <a href="{{ route('buku.filter', $data->id) }}">{{ $data->nama_penulis }}</a>
+                        </li>
+                        @endforeach
+
+                    </ul>
+                </div>
+            </div>
+            <div class="filter-section">
+                <h3>Tahun</h3>
+                <div class="col-md-12">
+                    <ul>
+                        <?php for ($year = 2000; $year <= 2024; $year++): ?>
+                        <li>
+                            <a href="">
+                                <?= $year ?>
+                            </a>
+                        </li>
+                        <?php endfor; ?>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-5">
+            <img src="{{ asset('images/tidakadafoto.jfif') }}" alt="" width="330" height="250" style="object-fit: cover" />
+        </div>
+
+        
+
+   
+
+
+        <!-- Category List -->
+        {{-- <div class="card border-0 shadow-sm p-3 mb-5">
+            <h2 class="mb-4">Kategori</h2>
+            <div style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                <div class="row">
+                    @foreach ($kategori as $index => $data)
+                    @if ($index % 10 == 0 && $index != 0)
+                </div>
+                <div class="row">
+                    @endif
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="{{ route('buku.filter', $data->id) }}">{{ $data->nama_kategori }}</a>
+        </li>
+        </ul>
+    </div>
+    @endforeach
 </div>
-<!-- Gallery End -->
+</div>
+</div> --}}
+
+
+<!-- Recent Post -->
+<div class="card border-0 shadow-sm p-3 mb-5">
+    <h2 class="mb-4">Buku Populer</h2>
+    @php
+    $limitedbuku = $buku->take(4);
+    @endphp
+    @foreach ($limitedbuku as $data)
+    <div class="d-flex align-items-center bg-light shadow-sm rounded overflow-hidden mb-3">
+        <a href="">
+            <img src="{{ asset('images/buku/' . ($data->foto)) }}" alt="" class="img-fluid" style="width: 80px; height: 80px" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
+        </a>
+        <div class="pl-3">
+            <h5 class="">{{$data->judul}}</h5>
+            <div class="d-flex">
+                <small class="mr-3"><i class="fa fa-user text-primary"></i> {{$data->penuli->nama_penulis}}</small>
+                <small class="mr-3"><i class="fa fa-folder text-primary"></i> {{$data->penerbit->nama_penerbit}}</small>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+</div>
+</div>
+</div>
+
+<!-- Detail End -->
 @endsection
+
+<!-- Comment List -->
+{{-- <div class="mb-5">
+    <h2 class="mb-4">3 Comments</h2>
+    <div class="media mb-4">
+        <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1" style="width: 45px" />
+        <div class="media-body">
+            <h6>
+                John Doe <small><i>01 Jan 2045 at 12:00pm</i></small>
+            </h6>
+            <p>
+                Diam amet duo labore stet elitr ea clita ipsum, tempor labore
+                accusam ipsum et no at. Kasd diam tempor rebum magna dolores
+                sed sed eirmod ipsum. Gubergren clita aliquyam consetetur
+                sadipscing, at tempor amet ipsum diam tempor consetetur at
+                sit.
+            </p>
+            <button class="btn btn-sm btn-light">Reply</button>
+        </div>
+    </div>
+    <div class="media mb-4">
+        <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1" style="width: 45px" />
+        <div class="media-body">
+            <h6>
+                John Doe <small><i>01 Jan 2045 at 12:00pm</i></small>
+            </h6>
+            <p>
+                Diam amet duo labore stet elitr ea clita ipsum, tempor labore
+                accusam ipsum et no at. Kasd diam tempor rebum magna dolores
+                sed sed eirmod ipsum. Gubergren clita aliquyam consetetur
+                sadipscing, at tempor amet ipsum diam tempor consetetur at
+                sit.
+            </p>
+            <button class="btn btn-sm btn-light">Reply</button>
+            <div class="media mt-4">
+                <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1" style="width: 45px" />
+                <div class="media-body">
+                    <h6>
+                        John Doe <small><i>01 Jan 2045 at 12:00pm</i></small>
+                    </h6>
+                    <p>
+                        Diam amet duo labore stet elitr ea clita ipsum, tempor
+                        labore accusam ipsum et no at. Kasd diam tempor rebum
+                        magna dolores sed sed eirmod ipsum. Gubergren clita
+                        aliquyam consetetur, at tempor amet ipsum diam tempor at
+                        sit.
+                    </p>
+                    <button class="btn btn-sm btn-light">Reply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+<script>
+    // script.js
+    function toggleDropdown() {
+        var dropdown = document.getElementById("dropdown");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        } else {
+            dropdown.style.display = "block";
+        }
+    }
+
+    // Menutup dropdown jika pengguna mengklik di luar area
+    window.onclick = function(event) {
+        if (!event.target.matches('.filter-btn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.style.display === "block") {
+                    openDropdown.style.display = "none";
+                }
+            }
+        }
+    }
+
+</script>
+
+

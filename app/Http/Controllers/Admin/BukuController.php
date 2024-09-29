@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\buku;
 use App\Models\penuli;
 use App\Models\penerbit;
-use App\Models\kategori;
+use App\Models\kategori; 
 use App\Models\Peminjamens;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;

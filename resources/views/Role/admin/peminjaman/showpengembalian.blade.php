@@ -1,12 +1,12 @@
 @extends('layouts.backend.admin')
 @section('content')
-<form class="row g-3" enctype="multipart/form-data" action="{{ route('peminjaman.update', $peminjaman->id) }}" method="POST">
+<form class="row g-3" enctype="multipart/form-data" action="{{ route('admin.peminjaman.update', $peminjaman->id) }}" method="POST">
     @csrf
     @method('PATCH')
     <div class="col-md-6">
         <label for="input13" class="form-label">Nama Peminjam</label>
         <div class="position-relative">
-            <input class="form-control mb-3" type="text" name="nama_peminjam" value="{{$peminjaman->nama_peminjam}}" readonly></input>
+            <input class="form-control mb-3" type="text" name="nama_peminjam" value="{{$peminjaman->user->name}}" readonly></input>
         </div>
     </div>
 

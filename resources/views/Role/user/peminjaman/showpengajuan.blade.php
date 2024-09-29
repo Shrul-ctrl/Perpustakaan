@@ -9,8 +9,8 @@
                     <div class="col-md-6">
                         <label for="input13" class="form-label">Nama Peminjam</label>
                         <div class="position-relative">
-                            <input class="form-control mb-3" type="text" name="nama_peminjam" placeholder="Nama" value="{{ Auth::user()->name }}" readonly>
-                            <input type="hidden" name="nama_peminjam" value="{{ Auth::user()->name }}">
+                            <input class="form-control mb-3" type="text" name="nama_peminjam" placeholder="Nama" value="{{ $peminjaman->user->name }}" readonly>
+                            {{-- <input type="hidden" name="nama_peminjam" value="{{ Auth::user()->name }}"> --}}
                         </div>
                     </div>
 

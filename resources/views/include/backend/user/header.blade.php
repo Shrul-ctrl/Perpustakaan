@@ -25,7 +25,7 @@
                 </div>
             </li>
 
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative m-4" data-bs-auto-close="outside" data-bs-toggle="dropdown" href="javascript:;">
                     <i class="material-icons-outlined">notifications</i>
                     @php
@@ -116,7 +116,7 @@
                     </div>
                     @endif
                 </div>
-            </li>
+            </li> --}}
 
 
             @include('include.fullstack.dropdown')

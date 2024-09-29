@@ -40,11 +40,17 @@
                 {{ session('success') }}
             </div>
             @endif
+
+            @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
             {{-- <a href="{{ route('penulis.create') }}" class="btn btn-grd btn-primary px-5 mb-2">Tambah Data <i class="material-icons-outlined" style="font-size: 18px; vertical-align: middle;">add</i></a> --}}
             <table class="table mb-0 table-striped" id="example2">
                 <thead>
                     <tr>
-                        <th scope="col" class="text-center" >No</th>
+                        <th scope="col" class="text-center">No</th>
                         <th scope="col">Nama Penulis</th>
                         <th scope="col" class="text-center">Aksi</th>
                     </tr>
