@@ -82,199 +82,155 @@
                     <span class="pr-2">Daftar Buku</span>
                 </p>
                 <h2 class="mb-3" id="daftar">Daftar Peminjaman Buku</h2>
+            </div>
 
-                @if ($kategoriDipilih)
-                <div class="d-flex justify-content-start gap-2">
-                    <a href="{{ route('listbuku') }}" type="button" class="btn btn-success">Tampilkan semua kategori</a>
-                    <button type="button" class="btn btn-primary" style="max-width: 200px;">{{ $kategoriDipilih->nama_kategori }}</button>
+            <!-- Comment List -->
+            <div class="card border-0 shadow-sm p-3 mb-5">
+                @if($buku->isEmpty())
+                <div class="row">
+                    <div class="col-lg-12 mb-5">
+                        <div class="alert alert-info" role="alert">
+                            <h2 class="text-center p-3">Buku Sedang Kosong</h2>
+                        </div>
+                    </div>
                 </div>
+                @endif
 
+                <div class="row">
+                    @foreach ($buku as $data)
+                    <div class="col-lg-3 mb-5">
+                        <div class="card border-0 bg-light shadow-sm pb-2">
+                            <img src="{{ asset('images/buku/' . ($data->foto)) }}" alt="" class="card-img-top" width="50" height="200" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">{{ $data->judul }}</h6>
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                                <a href="{{ route('user.peminjaman.create' , $data->id) }}" type="button" class="btn btn-primary btn-sm">Pinjam</a>
+                                <a href="{{ route('show.listbuku', $data->id) }}" type="button" class="btn btn-warning btn-sm">Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item {{ $buku->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $buku->previousPageUrl() }}" aria-label="Sebelum">
+                                <span aria-hidden="true">«</span>
+                            </a>
+                        </li>
 
-                {{-- @elseif ($penerbitDipilih)
-                <div class="d-flex justify-content-start gap-2">
-                    <a href="{{ route('listbuku') }}" type="button" class="btn btn-success">Tampilkan semua kategori</a>
-                <button type="button" class="btn btn-primary" style="max-width: 200px;">{{ $kategoriDipilih->nama_penerbit }}</button>
-            </div> --}}
-            @endif
+                        @foreach ($buku->getUrlRange(1, $buku->lastPage()) as $page => $url)
+                        <li class="page-item {{ $page == $buku->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                        </li>
+                        @endforeach
+
+                        <li class="page-item {{ $buku->hasMorePages() ? '' : 'disabled' }}">
+                            <a class="page-link" href="{{ $buku->nextPageUrl() }}" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
 
-        <!-- Comment List -->
-        <div class="card border-0 shadow-sm p-3 mb-5">
-            @if($buku->isEmpty())
-            <div class="row">
-                <div class="col-lg-12 mb-5">
-                    <div class="alert alert-info" role="alert">
-                        <h2 class="text-center p-3">Buku Sedang Kosong</h2>
+        <div class="col-lg-4 mt-5 mt-lg-0">
+            <div class="card border-0 shadow-sm mb-2 p-3">
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="filter-btn mb-3 border border-success" onclick="toggleDropdown()"> <i class="fas fa-filter"></i>Filter</button>
+                    <form action="{{ route('listbuku') }}" method="GET" class="mb-3">
+                        <select name="filter" class="form-select border border-primary" onchange="this.form.submit()">
+                            <option value="" class="text-center">-- Filter Buku --</option>
+                            <option value="terbaru">Filter Buku Terbaru</option>
+                            <option value="populer">Filter Buku Populer</option>
+                        </select>
+                    </form>
+
+                </div>
+            </div>
+            <div id="dropdown" class="dropdown-content">
+                <div class="filter-section">
+                    <h3>Kategori</h3>
+                    <div class="col-md-12">
+                        <ul>
+                            @foreach ($kategori as $data)
+                            <li>
+                                <a href="{{ route('kategori.filter', $data->id) }}">{{ $data->nama_kategori }}</a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>Penerbit</h3>
+                    <div class="col-md-12">
+                        <ul>
+                            @foreach ($penerbit as $data)
+                            <li>
+                                <a href="{{ route('penerbit.filter', $data->id) }}">{{ $data->nama_penerbit }}</a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>Penulis</h3>
+                    <div class="col-md-12">
+                        <ul>
+                            @foreach ($penulis as $data)
+                            <li>
+                                <a href="{{ route('penulis.filter', $data->id) }}">{{ $data->nama_penulis }}</a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>Tahun</h3>
+                    <div class="col-md-12">
+                        <ul>
+                            <?php for ($tahun = 2000; $tahun <= 2024; $tahun++): ?>
+                            <li>
+                                <a href="">
+                                    <?= $tahun ?>
+                                </a>
+                            </li>
+                            <?php endfor; ?>
+                        </ul>
+
                     </div>
                 </div>
             </div>
-            @endif
 
-            <div class="row">
-                @foreach ($buku as $data)
-                <div class="col-lg-3 mb-5">
-                    <div class="card border-0 bg-light shadow-sm pb-2">
-                        <img src="{{ asset('images/buku/' . ($data->foto)) }}" alt="" class="card-img-top" width="50" height="200" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
-                        <div class="card-body text-center">
-                            <h6 class="card-title">{{ $data->judul }}</h6>
-                        </div>
-                        <div class="d-flex justify-content-center gap-1">
-                            <a href="{{ route('user.peminjaman.create' , $data->id) }}" type="button" class="btn btn-primary btn-sm">Pinjam</a>
-                            <a href="{{ url('user/show', $data->id) }}" type="button" class="btn btn-warning btn-sm">Detail</a>
+            <div class="card border-0 shadow-sm mb-5">
+                <img src="{{ asset('images/tidakadafoto.jfif') }}" alt="" width="330" height="250" style="object-fit: cover" />
+            </div>
+
+            <!-- Recent Post -->
+            <div class="card border-0 shadow-sm p-3 mb-5">
+                <h2 class="mb-4">Buku Populer</h2>
+                @php
+                $limitedbuku = $bukupopuler->take(4);
+                @endphp
+                @foreach ($limitedbuku as $data)
+                <div class="d-flex align-items-center bg-light shadow-sm rounded overflow-hidden mb-3">
+                    <a href="{{ route('show.listbuku', $data->id) }}">
+                        <img src="{{ asset('images/buku/' . ($data->foto)) }}" alt="" class="m-1" style="width: 80px; height: 80px" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
+                    </a>
+                    <div class="pl-3">
+                        <h6 class="">{{$data->judul}}</h6>
+                        <div class="d-flex">
+                            <small class="mr-3"><i class="fa fa-user text-primary"></i> {{$data->penuli->nama_penulis}}</small>
+                            <small class="mr-3"><i class="fa fa-folder text-primary"></i> {{$data->penerbit->nama_penerbit}}</small>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item {{ $pagination->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $pagination->previousPageUrl() }}" aria-label="Sebelum">
-                            <span aria-hidden="true">«</span>
-                        </a>
-                    </li>
-
-                    @foreach ($pagination->getUrlRange(1, $pagination->lastPage()) as $page => $url)
-                    <li class="page-item {{ $page == $pagination->currentPage() ? 'active' : '' }}">
-                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                    </li>
-                    @endforeach
-
-                    <li class="page-item {{ $pagination->hasMorePages() ? '' : 'disabled' }}">
-                        <a class="page-link" href="{{ $pagination->nextPageUrl() }}" aria-label="Next">
-                            <span aria-hidden="true">»</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </div>
-
-    <div class="col-lg-4 mt-5 mt-lg-0">
-        <div class="card border-0 shadow-sm mb-2 p-3">
-            <div class="d-flex justify-content-end gap-2">
-                <button class="filter-btn mb-3 border border-success" onclick="toggleDropdown()"> <i class="fas fa-filter"></i>Filter</button>
-                <form action="{{ route('peminjaman.index') }}" method="GET" class="mb-3 ">
-                    <select name="status_pengajuan" class="form-select border border-primary" onchange="this.form.submit()">
-                        <option value="">Filter Buku Terbaru</option>
-                        <option value="">Filter Buku Populer</option>
-                    </select>
-                </form>
-            </div>
-        </div>
-        <div id="dropdown" class="dropdown-content">
-            <div class="filter-section">
-                <h3>Kategori</h3>
-                <div class="col-md-12">
-                    <ul>
-                        @foreach ($kategori as $data)
-                        <li>
-                            <a href="{{ route('buku.filter', $data->id) }}">{{ $data->nama_kategori }}</a>
-                        </li>
-                        @endforeach
-
-                    </ul>
-                </div>
-            </div>
-            <div class="filter-section">
-                <h3>Penerbit</h3>
-                <div class="col-md-12">
-                    <ul>
-                        @foreach ($penerbit as $data)
-                        <li>
-                            <a href="{{ route('buku.filter', $data->id) }}">{{ $data->nama_penerbit }}</a>
-                        </li>
-                        @endforeach
-
-                    </ul>
-                </div>
-            </div>
-            <div class="filter-section">
-                <h3>Penulis</h3>
-                <div class="col-md-12">
-                    <ul>
-                        @foreach ($penulis as $data)
-                        <li>
-                            <a href="{{ route('buku.filter', $data->id) }}">{{ $data->nama_penulis }}</a>
-                        </li>
-                        @endforeach
-
-                    </ul>
-                </div>
-            </div>
-            <div class="filter-section">
-                <h3>Tahun</h3>
-                <div class="col-md-12">
-                    <ul>
-                        <?php for ($year = 2000; $year <= 2024; $year++): ?>
-                        <li>
-                            <a href="">
-                                <?= $year ?>
-                            </a>
-                        </li>
-                        <?php endfor; ?>
-                    </ul>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="card border-0 shadow-sm mb-5">
-            <img src="{{ asset('images/tidakadafoto.jfif') }}" alt="" width="330" height="250" style="object-fit: cover" />
-        </div>
-
-        
-
-   
-
-
-        <!-- Category List -->
-        {{-- <div class="card border-0 shadow-sm p-3 mb-5">
-            <h2 class="mb-4">Kategori</h2>
-            <div style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                <div class="row">
-                    @foreach ($kategori as $index => $data)
-                    @if ($index % 10 == 0 && $index != 0)
-                </div>
-                <div class="row">
-                    @endif
-                    <div class="col-md-6">
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="{{ route('buku.filter', $data->id) }}">{{ $data->nama_kategori }}</a>
-        </li>
-        </ul>
-    </div>
-    @endforeach
-</div>
-</div>
-</div> --}}
-
-
-<!-- Recent Post -->
-<div class="card border-0 shadow-sm p-3 mb-5">
-    <h2 class="mb-4">Buku Populer</h2>
-    @php
-    $limitedbuku = $buku->take(4);
-    @endphp
-    @foreach ($limitedbuku as $data)
-    <div class="d-flex align-items-center bg-light shadow-sm rounded overflow-hidden mb-3">
-        <a href="">
-            <img src="{{ asset('images/buku/' . ($data->foto)) }}" alt="" class="img-fluid" style="width: 80px; height: 80px" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
-        </a>
-        <div class="pl-3">
-            <h5 class="">{{$data->judul}}</h5>
-            <div class="d-flex">
-                <small class="mr-3"><i class="fa fa-user text-primary"></i> {{$data->penuli->nama_penulis}}</small>
-                <small class="mr-3"><i class="fa fa-folder text-primary"></i> {{$data->penerbit->nama_penerbit}}</small>
-            </div>
-        </div>
-    </div>
-    @endforeach
-</div>
-</div>
-</div>
 </div>
 
 <!-- Detail End -->
@@ -358,5 +314,3 @@
     }
 
 </script>
-
-

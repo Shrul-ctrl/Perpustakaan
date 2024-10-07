@@ -20,12 +20,12 @@
                     <div class="menu-title">Dashboard</div>
                 </a>
             </li>
-            {{-- <li>
-                <a href="{{ route('user.index') }}">
+            <li>
+                <a href="{{ route('staff.user.index') }}">
                     <div class="parent-icon"><i class="material-icons-outlined">account_circle</i></div>
                     <div class="menu-title">User</div>
                 </a>
-            </li> --}}
+            </li>
             <li class="menu-label">Tabel</li>
             <li>
                 <a href="{{ route('staff.kategori.index') }}">

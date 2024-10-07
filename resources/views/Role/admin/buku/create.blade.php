@@ -15,29 +15,29 @@
                 <div class="col-md-4x">
                     <label for="input13" class="form-label">Judul</label>
                     <div class="position-relative">
-                        <input class="form-control mb-3" type="text" name="judul" placeholder="Judul" required>
+                        <input class="form-control" type="text" name="judul" placeholder="Judul" required>
                     </div>
                 </div>
 
                 <div class="col-md-4x">
                     <label for="input13" class="form-label">Deskripsi</label>
                     <div class="position-relative">
-                        <textarea class="form-control mb-3" type="text" name="deskripsi" placeholder="Deskripsi" required></textarea>
+                        <textarea class="form-control" type="text" name="deskripsi" placeholder="Deskripsi" required></textarea>
                     </div>
                 </div>
 
                 <div class="col-md-4x">
                     <label for="input13" class="form-label">Foto</label>
                     <div class="position-relative ">
-                        <input class="form-control mb-3" type="file" name="foto" required>
+                        <input class="form-control" type="file" name="foto" required>
                     </div>
                 </div>
 
                 <div class="col-md-4x">
                     <label for="input13" class="form-label">Penulis</label>
                     <div class="position-relative ">
-                        <select class="form-control mb-3" name="id_penulis" placeholder="penulis" required>
-                            <option disabled selected>Pilih Penulis</option>
+                        <select class="form-control" name="id_penulis" placeholder="penulis" required>
+                            <option disabled selected>-- Pilih Penulis --</option>
                             @foreach ($penulis as $data)
                             <option value="{{ $data->id }}">{{ $data->nama_penulis }} </option>
                             @endforeach
@@ -48,8 +48,8 @@
                 <div class="col-md-4x">
                     <label for="input13" class="form-label">Penerbit</label>
                     <div class="position-relative ">
-                        <select class="form-control mb-3" name="id_penerbit" placeholder="penerbit" required>
-                            <option disabled selected>Pilih Penerbit</option>
+                        <select class="form-control" name="id_penerbit" placeholder="penerbit" required>
+                            <option disabled selected>-- Pilih Penerbit --</option>
                             @foreach ($penerbit as $data)
                             <option value="{{ $data->id }}">{{ $data->nama_penerbit }} </option>
                             @endforeach
@@ -60,8 +60,8 @@
                 <div class="col-md-4x">
                     <label for="input13" class="form-label">Kategori</label>
                     <div class="position-relative ">
-                        <select class="form-control mb-3" name="id_kategori" placeholder="Kategori" required>
-                            <option disabled selected>Pilih Kategori</option>
+                        <select class="form-control" name="id_kategori" placeholder="Kategori" required>
+                            <option disabled selected>-- Pilih Kategori --</option>
                             @foreach ($kategori as $data)
                             <option value="{{ $data->id }}">{{ $data->nama_kategori }} </option>
                             @endforeach
@@ -72,14 +72,14 @@
                 <div class="col-md-4x">
                     <label for="input13" class="form-label">Tahun Terbit</label>
                     <div class="position-relative">
-                        <input class="form-control mb-3" type="text" name="tahun_terbit" placeholder="Tahun Terbit" required>
+                        <input class="form-control" type="text" name="tahun_terbit" placeholder="Tahun Terbit" required>
                     </div>
                 </div>
 
                 <div class="col-md-4x">
                     <label for="input13" class="form-label">Jumlah</label>
                     <div class="position-relative">
-                        <input class="form-control mb-3" type="number" name="jumlah_buku" placeholder="Jumlah" required>
+                        <input class="form-control" type="number" name="jumlah_buku" placeholder="Jumlah" required>
                     </div>
                 </div>
                 <div class="col-md-12">

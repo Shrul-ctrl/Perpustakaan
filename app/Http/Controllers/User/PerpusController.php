@@ -11,8 +11,7 @@ use App\Models\penerbit;
 use App\Models\user;
 use App\Models\komentar;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
@@ -55,29 +54,34 @@ class PerpusController extends Controller
         return view('Role.user.dashboarduser', compact('peminjamanuser', 'user', 'buku', 'jumlahbuku', 'jumlahpenerbit', 'jumlahpenulis', 'jumlahkategori', 'jumlahpinjam', 'jumlahhistori', 'user'));
     }
 
-    public function listbuku($id = null)
+    public function listbuku(Request $request, $id = null)
     {
-        $kategori = Kategori::all();
-        $penerbit = penerbit::all();
-        $penulis = penuli::all();
-        $bukufilter = buku::all();
-        $buku = $id ? Buku::where('id_kategori', $id)->get() :
-            $buku = Buku::paginate(16);
-        $kategoriDipilih = $id ? Kategori::find($id) : null;
-        $pagination = Buku::paginate(16);
         $user = Auth::user();
+        $bukupopuler = Buku::orderBy('id', 'desc')->get();
+        $kategori = Kategori::all();
+        $penerbit = Penerbit::all();
+        $penulis = penuli::all();
         $peminjaman = Peminjamens::all();
-        return view('Role.user.listbuku',  compact('kategoriDipilih', 'pagination', 'user','bukufilter','penerbit','penulis', 'peminjaman', 'buku', 'kategori'));
+
+        $query = Buku::query();
+
+        if ($request->filter === 'terbaru') {
+            $query->orderBy('id', 'desc');
+        }
+        $query->orderBy('id', 'desc');
+        $buku = $query->paginate(16);
+        return view('Role.user.listbuku', compact('bukupopuler', 'user', 'penerbit', 'penulis', 'peminjaman', 'buku', 'kategori'));
     }
 
-    public function show($id)
+
+    public function showbuku($id)
     {
         $buku = Buku::findOrFail($id);
-        $user = User::findOrFail($id);
+        // $user = User::findOrFail($id);
         $user = Auth::user();
         $peminjaman = Peminjamens::all();
         $komentars = Komentar::with('user')->latest()->get();
-        return view('Role.user.show', ['user' => $user], compact('komentars', 'buku', 'peminjaman', 'user'));
+        return view('Role.user.show', compact('komentars', 'buku', 'peminjaman', 'user'));
     }
 
     // public function historishow($id)
@@ -90,15 +94,23 @@ class PerpusController extends Controller
     //     return view('Role.user.historiuser', ['user' => $user], compact('komentars', 'buku', 'peminjaman', 'user'));
     // }
 
-    public function profilelistbuku($id = null)
+    public function profilelistbuku(Request $request, $id = null)
     {
         $user = Auth::user();
+        $bukupopuler = Buku::orderBy('id', 'desc')->get();
         $kategori = Kategori::all();
-        $buku = $id ? Buku::where('id_kategori', $id)->get() :
-            $buku = Buku::paginate(8);
-        $kategoriDipilih = $id ? Kategori::find($id) : null;
-        $pagination = Buku::paginate(8);
-        return view('Role.user.profilelistbuku', compact('kategoriDipilih', 'pagination', 'user', 'buku', 'kategori'));
+        $penerbit = Penerbit::all();
+        $penulis = penuli::all();
+        $peminjaman = Peminjamens::all();
+
+        $query = Buku::query();
+
+        if ($request->filter === 'terbaru') {
+            $query->orderBy('id', 'desc');
+        }
+        $query->orderBy('id', 'desc');
+        $buku = $query->paginate(16);
+        return view('Role.user.profilelistbuku', compact('bukupopuler', 'user', 'penerbit', 'penulis', 'peminjaman', 'buku', 'kategori'));
     }
 
     public function riwayat()

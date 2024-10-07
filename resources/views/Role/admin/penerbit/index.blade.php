@@ -68,7 +68,7 @@
                     <tr>
                         <th scope="row" class="text-center">{{ $loop->index+1 }}</th>
                         <td>{{ $data->nama_penerbit }}</td>
-                        <td>{{ $data->alamat }}</td>
+                        <td style="width: 180px">{{ $data->alamat }}</td>
                         <td class="text-center">
                             <form action="{{ route('penerbit.destroy', $data->id) }}" method="POST">
                                 @csrf

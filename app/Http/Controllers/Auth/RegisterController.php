@@ -84,7 +84,7 @@ class RegisterController extends Controller
         $get_token->save();
         $get_user_email = $data['email'];
         $get_user_user = $data['name'];
-        Mail::to($data['email'])->send(new WelcomeMail($get_user_email,$validToken,$get_user_user));
+        // Mail::to($data['email'])->send(new WelcomeMail($get_user_email,$validToken,$get_user_user));
     
         return $user;
     }

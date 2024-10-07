@@ -12,41 +12,51 @@ use App\Http\Middleware\IsVrifikasi;
 // Route::get('verify-account', [App\Http\Controllers\Auth\OtpController::class, 'verifyaccount'])->name('verifyAccount');
 // Route::post('verifyotp', [App\Http\Controllers\Auth\OtpController::class, 'useractivation'])->name('verifyotp');
 
-
+//tampilan yang bisa diakses sebelum login
 Route::get('', [App\Http\Controllers\User\PerpusController::class, 'index'])->name('AssalaamPerpustakaan');
 Route::get('kirim-email', [EmailController::class, 'index']);
-Route::get('show/{id}', [App\Http\Controllers\User\PerpusController::class, 'show']);
-Route::get('listbuku', [App\Http\Controllers\User\PerpusController::class, 'listbuku'])->name('listbuku');
+Route::get('detail/buku/{id}', [App\Http\Controllers\User\PerpusController::class, 'showbuku'])->name('show.listbuku');
 Route::get('fax', [App\Http\Controllers\User\PerpusController::class, 'fax'])->name('fax');
 Route::get('hubungi', [App\Http\Controllers\User\PerpusController::class, 'hubungi'])->name('hubungi');
-Route::get('filter/{id}', [App\Http\Controllers\User\PerpusController::class, 'listbuku'])->name('buku.filter');
-// Route::get('penerbit/{id}', [App\Http\Controllers\User\PerpusController::class, 'listbuku'])->name('penerbit.filter');
+
+// Filter
+Route::get('listbuku', [App\Http\Controllers\User\PerpusController::class, 'listbuku'])->name('listbuku');
+Route::get('filter/katrgori/{id}', [App\Http\Controllers\User\FilterBukuController::class, 'filterkategori'])->name('kategori.filter');
+Route::get('filter/penerbit/{id}', [App\Http\Controllers\User\FilterBukuController::class, 'filterpenerbit'])->name('penerbit.filter');
+Route::get('filter/penulis/{id}', [App\Http\Controllers\User\FilterBukuController::class, 'filterpenulis'])->name('penulis.filter');
+
 Route::get('profilelistbuku/{id}', [App\Http\Controllers\User\PerpusController::class, 'profilelistbuku'])->name('profilelistbuku.filter');
 
 // Route::group(['middleware' => ['auth',IsVrifikasi::class]], function () {
-    Route::group(['prefix' => 'user'], function () {
-        Route::group(['middleware' => ['auth']], function () {
-            Route::get('verify-account', [App\Http\Controllers\Auth\OtpController::class, 'verifyaccount'])->name('verifyAccount');
-            Route::post('verifyotp', [App\Http\Controllers\Auth\OtpController::class, 'useractivation'])->name('verifyotp');
-            Route::get('home', [App\Http\Controllers\Auth\OtpController::class, 'index'])->name('otphome');
+Route::group(['prefix' => 'user'], function () {
+    Route::group(['middleware' => ['auth']], function () {
 
-            Route::get('', [App\Http\Controllers\User\PerpusController::class, 'dashboard'])->name('dashboarduser');
-            Route::get('profile', [App\Http\Controllers\User\ProfilController::class, 'index'])->name('profile');
-            Route::patch('profile/{user}', [App\Http\Controllers\User\ProfilController::class, 'update'])->name('profile.update');
-            Route::get('profilelistbuku', [App\Http\Controllers\User\PerpusController::class, 'profilelistbuku'])->name('profilelistbuku');
-            Route::get('historiuser', [App\Http\Controllers\User\PerpusController::class, 'riwayat'])->name('historiuser');
-            Route::resource('peminjaman', App\Http\Controllers\User\PeminjamanUserController::class);
-            Route::get('peminjaman/create/{id}', [App\Http\Controllers\User\PeminjamanUserController::class, 'create'])->name('user.peminjaman.create');
-            Route::get('pengajuan/show/{id}', [App\Http\Controllers\User\PeminjamanUserController::class, 'showpengajuanuser'])->name('showpengajuanuser');
-            Route::get('pengembalian/show/{id}', [App\Http\Controllers\User\PeminjamanUserController::class, 'showpengembalianuser'])->name('showpengembalianuser');
-            Route::get('/peminjaman/show/{id}', [App\Http\Controllers\User\PerpusController::class, 'showhistori'])->name('peminjaman.show');
+        Route::get('', [App\Http\Controllers\User\PerpusController::class, 'dashboard'])->name('dashboarduser');
+        Route::get('profile', [App\Http\Controllers\User\ProfilController::class, 'index'])->name('profile');
+        Route::patch('profile/{user}', [App\Http\Controllers\User\ProfilController::class, 'update'])->name('profile.update');
+        Route::get('historiuser', [App\Http\Controllers\User\PerpusController::class, 'riwayat'])->name('historiuser');
+        Route::resource('peminjaman', App\Http\Controllers\User\PeminjamanUserController::class);
+        Route::get('peminjaman/create/{id}', [App\Http\Controllers\User\PeminjamanUserController::class, 'create'])->name('user.peminjaman.create');
+        Route::get('pengajuan/show/{id}', [App\Http\Controllers\User\PeminjamanUserController::class, 'showpengajuanuser'])->name('showpengajuanuser');
+        Route::get('pengembalian/show/{id}', [App\Http\Controllers\User\PeminjamanUserController::class, 'showpengembalianuser'])->name('showpengembalianuser');
+        Route::get('/peminjaman/show/{id}', [App\Http\Controllers\User\PerpusController::class, 'showhistori'])->name('peminjaman.show');
 
+        //OTP
+        Route::get('verify-account', [App\Http\Controllers\Auth\OtpController::class, 'verifyaccount'])->name('verifyAccount');
+        Route::post('verifyotp', [App\Http\Controllers\Auth\OtpController::class, 'useractivation'])->name('verifyotp');
+        Route::get('home', [App\Http\Controllers\Auth\OtpController::class, 'index'])->name('otphome');
+        
+        //Filter
+        Route::get('profilelistbuku', [App\Http\Controllers\User\PerpusController::class, 'profilelistbuku'])->name('profilelistbuku');
+        Route::get('filter/katrgori/{id}', [App\Http\Controllers\User\FilterBukuController::class, 'filterkategoriuser'])->name('kategori.filter.user');
+        Route::get('filter/penerbit/{id}', [App\Http\Controllers\User\FilterBukuController::class, 'filterpenerbituser'])->name('penerbit.filter.user');
+        Route::get('filter/penulis/{id}', [App\Http\Controllers\User\FilterBukuController::class, 'filterpenulisuser'])->name('penulis.filter.user');
 
-            Route::resource('komentar', App\Http\Controllers\User\KomentarController::class);
-            Route::resource('kontak', App\Http\Controllers\User\KontakController::class);
-            Route::get('ulasan', [App\Http\Controllers\User\UlasanController::class, 'index'])->name('ulasan');
-        });
+        Route::resource('komentar', App\Http\Controllers\User\KomentarController::class);
+        Route::resource('kontak', App\Http\Controllers\User\KontakController::class);
+        Route::get('ulasan', [App\Http\Controllers\User\UlasanController::class, 'index'])->name('ulasan');
     });
+});
 // });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', IsAdmin::class]], function () {
@@ -77,6 +87,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth', isStaff::class]], fu
     Route::resource('penerbit', App\Http\Controllers\Staff\PenerbitController::class, ['as' => 'staff']);
     Route::resource('penulis', App\Http\Controllers\Staff\PenulisController::class, ['as' => 'staff']);
     Route::resource('buku', App\Http\Controllers\Staff\BukuController::class, ['as' => 'staff']);
+    Route::resource('user', App\Http\Controllers\Staff\UserController::class, ['as' => 'staff']);
 
     // peminjaman
     Route::resource('peminjaman', App\Http\Controllers\Staff\PeminjamanStaffrController::class, ['as' => 'staff']);
