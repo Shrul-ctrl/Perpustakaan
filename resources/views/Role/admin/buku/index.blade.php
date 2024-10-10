@@ -37,7 +37,7 @@
                     <th scope="col" style="width: 100px;">Judul</th>
                     <th scope="col">Penulis</th>
                     <th scope="col">Penerbit</th>
-                    <th scope="col">Kategori</th>
+                    <th scope="col">Kaqtegori</th>
                     {{-- <th scope="col">Tahun Terbit</th> --}}
                     <th scope="col">Jumlah</th>
                     {{-- <th scope="col">Foto</th> --}}

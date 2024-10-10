@@ -4,17 +4,29 @@
     <div class="card">
         <div class="card-body p-4">
             <h5 class="mb-4">Beri Ulasan Buku</h5>
-            <form class="row g-3" method="POST" action="" enctype="multipart/form-data">
+            <form class="row g-3" method="POST" action="{{ route('ulasan.store') }}" enctype="multipart/form-data">
                 @csrf
 
+                {{-- <div class="col-md-6"> --}}
+                    {{-- <label class="form-label">Nama</label> --}}
+                    <input class="form-control mb-3" type="hidden" name="id_user" value="{{ Auth::user()->id }}" required>
+                {{-- </div> --}}
+
                 <div class="col-md-6">
-                    <label for="judul_buku" class="form-label">Judul Buku</label>
-                    <input class="form-control mb-3" type="text" name="judul_buku" placeholder="Judul Buku" required>
+                    <label for="input13" class="form-label">Penulis</label>
+                    <div class="position-relative ">
+                        <select class="form-control" name="id_peminjaman" placeholder="penulis" required>
+                            @foreach ($pinjam as $data)
+                            <option value="{{ $data->id }}">{{ $data->id_buku }} </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <div class="col-md-6">
-                    <label for="rating" class="form-label">Rating</label>
+                    <label class="form-label">Rating</label>
                     <select class="form-control mb-3" name="rating" required>
+                        <option disabled selected>-- Pilih Ranting --</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -24,7 +36,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <label for="ulasan" class="form-label">Ulasan</label>
+                    <label class="form-label">Ulasan</label>
                     <textarea class="form-control mb-3" name="ulasan" rows="4" placeholder="Tulis ulasan Anda di sini" required></textarea>
                 </div>
 

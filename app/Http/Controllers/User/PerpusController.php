@@ -69,7 +69,7 @@ class PerpusController extends Controller
             $query->orderBy('id', 'desc');
         }
         $query->orderBy('id', 'desc');
-        $buku = $query->paginate(16);
+        $buku = $query->paginate(15);
         return view('Role.user.listbuku', compact('bukupopuler', 'user', 'penerbit', 'penulis', 'peminjaman', 'buku', 'kategori'));
     }
 

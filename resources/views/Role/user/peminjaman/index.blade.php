@@ -39,7 +39,7 @@
                         <th scope="col">Jumlah</th>
                         <th scope="col">Tanggal Peminjaman</th>
                         <th scope="col">Batas Peminjaman</th>
-                        <th scope="col">Tanggal Pengembalian</th>
+                        {{-- <th scope="col">Tanggal Pengembalian</th> --}}
                         <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
                     </tr>
@@ -54,7 +54,7 @@
                         <td class="text-center">{{ $data->jumlah_pinjam }}</td>
                         <td class="text-center">{{ $data->tanggal_pinjam }}</td>
                         <td class="text-center">{{ $data->batas_pinjam }}</td>
-                        <td class="text-center">{{ $data->tanggal_kembali }}</td>
+                        {{-- <td class="text-center">{{ $data->tanggal_kembali }}</td> --}}
                         @include('include.fullstack.ifelsestatus')
 
                         <td>
@@ -82,9 +82,13 @@
                                 <i class="material-icons-outlined" style="font-size: 18px;">comment</i>
                             </a>
 
-
                             @elseif($data->status_pengajuan === 'pengembalian ditolak')
                             <a href="{{ route('showpengembalianuser', $data->id) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="left" title="Lihat Alasan Ditolak">
+                                <i class="material-icons-outlined" style="font-size: 18px;">visibility</i>
+                            </a>
+
+                            @elseif($data->status_pengajuan === 'dikembalikan')
+                            <a href="{{ route('showpengembalianuser', $data->id) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="left" title="Lihat detail Buku">
                                 <i class="material-icons-outlined" style="font-size: 18px;">visibility</i>
                             </a>
 

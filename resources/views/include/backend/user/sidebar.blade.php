@@ -27,7 +27,7 @@
             </li>
             <li class="menu-label">List</li>
             <li>
-                <a href="{{url('favorite')}}">
+                <a href="{{route('favorit')}}">
                     <div class="parent-icon"><i class="material-icons-outlined">favorite</i></div>
                     <div class="menu-title">favorit</div>
                 </a>

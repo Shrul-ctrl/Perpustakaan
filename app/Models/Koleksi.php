@@ -5,11 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Peminjamens extends Model
+class Koleksi extends Model
 {
     use HasFactory;
-    protected $fillable = ['id','id_user','id_buku', 'jumlah_pinjam','tanggal_pinjam','batas_pinjam','tanggal_kembali','status_pengajuan','alasan_pengembalian','alasan_pengajuan'];
-    public $timestamps = true;
+    protected $fillable = [
+        'id',
+        'id_user',
+        'id_buku',
+        'status_disukai'
+    ];
 
     public function buku()
     {
@@ -19,10 +23,5 @@ class Peminjamens extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
-    }
-
-    public function Ulasan()
-    {
-        return $this->hasMany(Ulasan::class);
     }
 }

@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="d-flex justify-content-center gap-1">
                                     {{-- <a href="{{ route('peminjaman.create') }}" type="button" class="btn btn-primary" style="font-size: 12px; padding: 4px 8px;">Pinjam Lagi</a> --}}
-                                    <a href="{{ route('ulasan') }}" type="button" class="btn btn-success" style="font-size: 12px; padding: 4px 8px;"  data-bs-toggle="tooltip" data-bs-placement="left" title="Beri Ulasan Buku">
+                                    <a href="{{ route('ulasan.create') }}" type="button" class="btn btn-success" style="font-size: 12px; padding: 4px 8px;"  data-bs-toggle="tooltip" data-bs-placement="left" title="Beri Ulasan Buku">
                                         <i class="material-icons-outlined" style="font-size: 18px;">comment</i>
                                     </a>
                                     <a href="" type="button" class="btn btn-primary" style="font-size: 12px; padding: 4px 8px;" data-bs-toggle="modal" data-bs-target="#FormModal"  data-bs-toggle="tooltip" data-bs-placement="left" title="Detail peminjaman Buku">

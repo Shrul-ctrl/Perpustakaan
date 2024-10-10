@@ -4,10 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Peminjamens;
-use App\Models\Penuli; // Capitalized model name
+use App\Models\Penuli;
 use App\Models\Kategori;
-use App\Models\Buku; // Capitalized model name
-use App\Models\Penerbit; // Capitalized model name
+use App\Models\Buku;
+use App\Models\Penerbit;
 use Illuminate\Support\Facades\Auth;
 
 class FilterBukuController extends Controller

@@ -31,6 +31,16 @@ class Buku extends Model
         return $this->hasMany(Peminjamens::class, 'id_buku');
     }
 
+    public function Ulasan()
+    {
+        return $this->hasMany(Ulasan::class);
+    }
+
+    public function koleksi()
+    {
+        return $this->hasMany(Koleksi::class, 'id_buku', 'id');
+    }
+
     public function deleteImage()
     {
         if ($this->error && file_exists(public_path('foto/buku' . $this->cover))) {

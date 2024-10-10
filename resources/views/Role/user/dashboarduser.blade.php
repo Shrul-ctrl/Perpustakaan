@@ -104,7 +104,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($peminjamanuser as $data)
+                            @php
+                            $limitedpeminjamanuser = $peminjamanuser ->take(6)
+                            @endphp
+                            {{-- @foreach ($limitedbuku as $data ) --}}
+                            @foreach ($limitedpeminjamanuser as $data)
                             <tr>
                                 <th scope="row" class="text-center">{{ $loop->index+1 }}</th>
                                 <td>{{ $data->buku->judul }}</td>

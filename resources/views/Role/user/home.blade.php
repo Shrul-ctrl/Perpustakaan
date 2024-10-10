@@ -114,39 +114,80 @@
                 @else
                 <div class="row">
                     @php
-                    $limitedbuku = $buku ->take(8)
+                    $limitedbuku = $buku->take(8);
                     @endphp
-                    @foreach ($limitedbuku as $data )
+                    @foreach ($limitedbuku as $data)
                     <div class="col-3 mb-5">
                         <div class="card border-0 bg-light shadow-sm pb-2">
-                            <a href="{{ url('show' , $data->id) }}">
-                                <img src="{{ asset('images/buku/' . $data->foto) }}" alt="" class="card-img-top" alt="..." height="290" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
+                            <a href="{{ url('show', $data->id) }}">
+                                <img src="{{ asset('images/buku/' . $data->foto) }}" alt="" class="card-img-top" height="290" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
                             </a>
                             <div class="card-body text-center">
-                                <h6 class="card-title">{{$data->judul}}</h6>
+                                <h6 class="card-title">{{ $data->judul }}</h6>
                                 <p class="card-text">
                                     {{-- {{$data->deskripsi}} --}}
                                 </p>
                             </div>
-                            <div class="d-flex justify-content-center gap-2">
-                                {{-- <a href="" type="button" class="btn btn-primary px-4 float-end mb-4 mr-5" data-bs-toggle="modal" data-bs-target="#ScrollableModal">Kembali</a> --}}
-                                {{-- <a href="{{ url('user/show', $data->id) }}#komentar" type="button" class="btn btn-success">Ulas</a> --}}
+                            <div class="d-flex justify-content-center gap-1">
                                 <a href="{{ route('user.peminjaman.create', $data->id) }}" type="button" class="btn btn-primary">Pinjam</a>
                                 <a href="{{ route('show.listbuku', $data->id) }}" type="button" class="btn btn-warning">Detail</a>
-                            </div>
+                                <div class="d-flex justify-content-center gap-1">
+                                    @php
+                                    $status = $data->koleksi()->where('id_user', Auth::id())->first();
+                                    @endphp
 
+                                    @if ($status && $status->status_disukai === 'suka')
+                                    <form action="{{ route('koleksi.destroy', $status->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="material-icons-outlined">favorite</i>
+                                        </button>
+                                    </form>
+                                    @else
+                                    <form action="{{ route('koleksi.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id_user" value="{{ Auth::id() }}" required>
+                                        <input type="hidden" name="id_buku" value="{{ $data->id }}" required>
+                                        <input type="hidden" name="status_disukai" value="suka" required>
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="material-icons-outlined">favorite_border</i>
+                                        </button>
+                                    </form>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                     @endforeach
                     <div class="d-flex justify-content-center">
-                    <a href="{{ route('listbuku') }}" type="button" class="btn btn-primary">Lihat Lebih Banyak Buku</a>
+                        <a href="{{ route('listbuku') }}" type="button" class="btn btn-primary">Lihat Lebih Banyak Buku</a>
                     </div>
                 </div>
+
                 @endif
             </div>
         </div>
     </div>
     <!-- Class End -->
+
+    {{-- <form enctype="multipart/form-data" action="{{ route('disimpan', $data->id) }}" method="POST">
+    @csrf
+    @method('PATCH')
+
+    @if($data->disukai)
+    <button type="submit" name="disukai" value="false" class="btn btn-danger">
+        <i class="material-icons-outlined">favorite</i>
+    </button>
+    @else
+    <button type="submit" name="disukai" value="true" class="btn btn-success">
+        <i class="material-icons-outlined">favorite_border</i>
+    </button>
+    @endif
+    </form> --}}
+
+    {{-- <a href="" type="button" class="btn btn-primary px-4 float-end mb-4 mr-5" data-bs-toggle="modal" data-bs-target="#ScrollableModal">Kembali</a> --}}
+    {{-- <a href="{{ url('user/show', $data->id) }}#komentar" type="button" class="btn btn-success">Ulas</a> --}}
 
     {{-- <section id="hubungi_kami" class="pt-5">
     <div class="container-fluid py-5 mt-5">

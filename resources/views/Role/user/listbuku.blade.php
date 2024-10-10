@@ -98,16 +98,41 @@
 
                 <div class="row">
                     @foreach ($buku as $data)
-                    <div class="col-lg-3 mb-5">
-                        <div class="card border-0 bg-light shadow-sm pb-2">
+                    <div class="col-lg-3 mb-3">
+                        <div class="card border-0 bg-light shadow-sm ">
                             <img src="{{ asset('images/buku/' . ($data->foto)) }}" alt="" class="card-img-top" width="50" height="200" onerror="this.onerror=null; this.src='{{ asset('images/tidakadafoto.jfif') }}';">
                             <div class="card-body text-center">
                                 <h6 class="card-title">{{ $data->judul }}</h6>
                             </div>
-                            <div class="d-flex justify-content-center gap-1">
+                            {{-- <div class="d-flex justify-content-center gap-1">
                                 <a href="{{ route('user.peminjaman.create' , $data->id) }}" type="button" class="btn btn-primary btn-sm">Pinjam</a>
                                 <a href="{{ route('show.listbuku', $data->id) }}" type="button" class="btn btn-warning btn-sm">Detail</a>
-                            </div>
+                                <div class="d-flex justify-content-center gap-1">
+                                    @php
+                                    $status = $data->koleksi()->where('id_user', Auth::id())->first();
+                                    @endphp
+
+                                    @if ($status && $status->status_disukai === 'suka')
+                                    <form action="{{ route('koleksi.destroy', $status->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="material-icons-outlined">favorite</i>
+                                        </button>
+                                    </form>
+                                    @else
+                                    <form action="{{ route('koleksi.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id_user" value="{{ Auth::id() }}" required>
+                                        <input type="hidden" name="id_buku" value="{{ $data->id }}" required>
+                                        <input type="hidden" name="status_disukai" value="suka" required>
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="material-icons-outlined">favorite_border</i>
+                                        </button>
+                                    </form>
+                                    @endif
+                                </div>
+                            </div> --}}
                         </div>
                     </div>
                     @endforeach
